@@ -1,0 +1,24 @@
+{
+  "name": "wander",
+  "version": "1.0.0",
+  "description": "Basic boilerplate for js drawing experiments",
+  "main": "main.js",
+  "dependencies": {
+    "prando": "^5.1.2",
+    "snowpack": "^2.6.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonahs99/temp-draw.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jonahs99/temp-draw/issues"
+  },
+  "homepage": "https://github.com/jonahs99/temp-draw#readme"
+}
