@@ -1,5 +1,3 @@
-import * as doodle from './doodles/flutter.js'
-
 import { mount } from '../doodle/lib.js'
 
 const doodles = ['wave', 'tree', 'flutter'].map(name => `./doodles/${name}.js`)

@@ -2,13 +2,12 @@ import { tweak, Prando } from '../../doodle/lib.js'
 
 export function config() {
 	return tweak.label('TREE:', {
-		iterations: 20,
+		iterations: tweak.integer(20),
 		decay: 0.95,
 		length: 60,
 		angle: 1,
 		branchPrb: 0.1,
-		randomSeed: 0,
-		color: tweak.select('black', 'red', 'blue'),
+		randomSeed: tweak.integer(0),
 	})
 }
 
@@ -22,7 +21,6 @@ export function setup({ config, ctx, canvas }) {
 	ctx.rotate(-Math.PI / 2)
 
 	ctx.lineWidth = 6;
-	ctx.strokeStyle = config.color
 
 	const rng = new Prando(config.randomSeed)
 	tree({ config, ctx, rng })
