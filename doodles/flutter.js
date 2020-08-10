@@ -1,4 +1,4 @@
-import { tweak } from '../../doodle/lib.js'
+import { tweak } from 'https://cdn.jsdelivr.net/gh/jonahs99/doodle/lib.js'
 
 export function config() {
 	return tweak.label('FLUTTER:', {

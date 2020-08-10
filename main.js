@@ -1,4 +1,4 @@
-import { mount } from '../doodle/lib.js'
+import { mount } from 'https://cdn.jsdelivr.net/gh/jonahs99/doodle/lib.js'
 
 const doodles = ['wave', 'tree', 'flutter'].map(name => `./doodles/${name}.js`)
 
