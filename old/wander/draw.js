@@ -1,4 +1,4 @@
-import Prando from 'prando'
+import Prando from 'https://unpkg.com/prando?module'
 
 let scl = 0.7
 let br = 1
