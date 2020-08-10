@@ -2,12 +2,12 @@ import { tweak, Prando } from '../../doodle/lib.js'
 
 export function config() {
 	return tweak.label('TREE:', {
-		iterations: tweak.integer(20),
-		decay: 0.95,
-		length: 60,
-		angle: 1,
-		branchPrb: 0.1,
-		randomSeed: tweak.integer(0),
+		iterations: tweak.integer(36),
+		decay: 0.9,
+		length: 80,
+		angle: 5,
+		branchPrb: 0.24,
+		randomSeed: tweak.integer(116),
 	})
 }
 
