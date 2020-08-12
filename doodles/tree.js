@@ -6,8 +6,8 @@ export function config() {
 		width: 6,
 		decay: 0.89,
 		branchPrb: 0.24,
-		length: tweak.distribution({ normal: { mean: 40, stddev: 10 } }),
-		angle: tweak.distribution({ normal: { mean: 0, stddev: 0.5 } }),
+		length: distribution({ normal: { mean: 40, stddev: 10 } }),
+		angle: distribution({ normal: { mean: 0, stddev: 0.5 } }),
 		randomSeed: tweak.integer(154),
 	})
 }
@@ -50,4 +50,18 @@ function tree({ config, ctx, rng }, n = config.iterations) {
 	if (rng.next() < config.branchPrb) tree({ config, ctx, rng }, n - 1)
 
 	ctx.restore()
+}
+
+// Temporarily copied from tweak until cdn updates
+const distribution = (value) => {
+	let options = {
+		constant: 1,
+		uniform: { min: 0, max: 1 },
+		normal: { mean: 0, stddev: 1 },
+	}
+	if (value) {
+		delete options[variantType(value)];
+		options = { ...value, ...options }
+	}
+	return union(options)
 }

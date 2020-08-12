@@ -8,7 +8,7 @@ export const config = () =>
 		cols: 12,
 		size: 30,
 
-		color: tweak.select('red', 'blue', 'orange'),
+		color: tweak.select('black', 'red', 'blue', 'orange'),
 
 		phases: [
 			{
