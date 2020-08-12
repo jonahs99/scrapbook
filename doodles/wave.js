@@ -4,8 +4,8 @@ const TAU = 2 * Math.PI
 
 export const config = () =>
 	tweak.label('WAVE:', {
-		rows: 18,
-		cols: 12,
+		rows: tweak.integer(18),
+		cols: tweak.integer(12),
 		size: 30,
 
 		color: tweak.select('black', 'red', 'blue', 'orange'),
