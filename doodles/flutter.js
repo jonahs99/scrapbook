@@ -5,7 +5,7 @@ export function config() {
 		rows: tweak.integer(3),
 		cols: tweak.integer(3),
 		size: 160,
-		color: '#c00',
+		color: '#222',
 	})
 }
 
