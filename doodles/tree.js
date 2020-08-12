@@ -60,8 +60,8 @@ const distribution = (value) => {
 		normal: { mean: 0, stddev: 1 },
 	}
 	if (value) {
-		delete options[variantType(value)];
+		delete options[Object.keys(value)[0]];
 		options = { ...value, ...options }
 	}
-	return union(options)
+	return tweak.union(options)
 }
