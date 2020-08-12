@@ -1,13 +1,14 @@
-import { tweak, Prando } from 'https://cdn.jsdelivr.net/gh/jonahs99/doodle/lib.js'
+import { tweak, sample, Prando } from 'https://cdn.jsdelivr.net/gh/jonahs99/doodle/lib.js'
 
 export function config() {
 	return tweak.label('TREE:', {
-		iterations: tweak.integer(36),
-		decay: 0.9,
-		length: 80,
-		angle: 5,
+		iterations: tweak.integer(26),
+		width: 6,
+		decay: 0.89,
 		branchPrb: 0.24,
-		randomSeed: tweak.integer(116),
+		length: tweak.distribution({ normal: { mean: 40, stddev: 10 } }),
+		angle: tweak.distribution({ normal: { mean: 0, stddev: 0.5 } }),
+		randomSeed: tweak.integer(154),
 	})
 }
 
@@ -20,7 +21,7 @@ export function setup({ config, ctx, canvas }) {
 	ctx.translate(canvas.width / 2, canvas.height * 0.9)
 	ctx.rotate(-Math.PI / 2)
 
-	ctx.lineWidth = 6;
+	ctx.lineWidth = config.width;
 
 	const rng = new Prando(config.randomSeed)
 	tree({ config, ctx, rng })
@@ -29,8 +30,8 @@ export function setup({ config, ctx, canvas }) {
 function tree({ config, ctx, rng }, n = config.iterations) {
 	if (n <= 0) return
 
-	const l = rng.next() * config.length
-	const t = (rng.next() - 0.5) * config.angle
+	const l = sample(config.length, rng)
+	const t = sample(config.angle, rng)
 	const midpt = { x: l, y: 0 }
 	const endpt = { x: midpt.x + l * Math.cos(t), y: l * Math.sin(t) }
 
