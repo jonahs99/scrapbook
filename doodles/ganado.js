@@ -4,7 +4,7 @@ export function config() {
 	return tweak.label('Ganado:', {
 		iterations: tweak.integer(1),
     // sides: 2,
-		sides: [{
+		model: [{
 			angle: 5,
 			length: 180,
 		}]
@@ -28,7 +28,6 @@ export function setup({ config, ctx, canvas }) {
 
 function ganado({ config, ctx }, n = config.iterations) {
   // Create array of vectors (the 'model')
-	// Q for Jonah: can tweak learn to assign variable length arrays/hashes?
   var model = [
 		{ angle: config.angle_1, length: config.length_1},
 		{ angle: config.angle_2, length: config.length_2}

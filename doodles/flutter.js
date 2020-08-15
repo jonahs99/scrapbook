@@ -1,10 +1,11 @@
-import { tweak } from 'https://cdn.jsdelivr.net/gh/jonahs99/doodle/lib.js'
+import { tweak } from '../lib.js'
 
 export function config() {
 	return tweak.label('FLUTTER:', {
-		rows: 6,
-		cols: 8,
-		size: 100,
+		rows: tweak.integer(3),
+		cols: tweak.integer(3),
+		size: 160,
+		color: '#222',
 	})
 }
 
@@ -18,7 +19,8 @@ export function draw({ config, ctx, canvas }) {
 
 	ctx.translate(canvas.width / 2, canvas.height / 2)
 
-	ctx.fillStyle = '#0044ffaa'
+	// ctx.fillStyle = '#0044ffaa'
+	ctx.fillStyle = config.color
 	ctx.strokeStyle = ctx.fillStyle
 
 	const l = config.size

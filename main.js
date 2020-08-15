@@ -1,8 +1,11 @@
-import { mount } from 'https://cdn.jsdelivr.net/gh/jonahs99/doodle/lib.js'
+import { mountDoodle } from './doodle.js'
 
-//const doodles = ['wave', 'tree', 'flutter', 'ganado'].map(name => `./doodles/${name}.js`)
-const doodles = ['ganado'].map(name => `./doodles/${name}.js`)
+const scripts = ['wave', 'tree', 'flutter', 'ganado']
+const script = (scripts.includes(location.search.substr(1)) && location.search.substr(1)) ||
+	scripts[Math.floor(Math.random() * scripts.length)]
 
-import(doodles[Math.floor(Math.random() * doodles.length)]).then(doodle => {
-	mount(doodle, document.querySelector('canvas'), document.querySelector('.config-container'))
+import(`./doodles/${script}.js`).then(doodle => {
+	const canvas = document.querySelector('canvas')
+	const configContainer = document.querySelector('.config-container')
+	mountDoodle(doodle, canvas, configContainer)
 })

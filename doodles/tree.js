@@ -1,18 +1,35 @@
-import { tweak, Prando } from 'https://cdn.jsdelivr.net/gh/jonahs99/doodle/lib.js'
+import { tweak, sample, Prando } from '../lib.js'
 
 export function config() {
 	return tweak.label('TREE:', {
-		iterations: tweak.integer(36),
-		decay: 0.9,
-		length: 80,
-		angle: 5,
+		animate: tweak.union({
+			off: undefined,
+			lerp: tweak.number(0.01, 0.01, 0.01, 1),
+		}),
+		iterations: tweak.integer(26),
+		width: 6,
+		decay: 0.89,
 		branchPrb: 0.24,
-		randomSeed: tweak.integer(116),
+		length: tweak.distribution({ normal: { mean: 40, stddev: 10 } }),
+		angle: tweak.distribution({ normal: { mean: 0, stddev: 0.5 } }),
+		randomSeed: tweak.integer(154),
 	})
 }
 
+const anim = 0.02
+let configAnim
+
 export function setup({ config, ctx, canvas }) {
 	canvas.style.background = '#eee'
+}
+
+export function draw({ config, ctx, canvas }) {
+	if (config.animate.lerp) {
+		configAnim = lerp(configAnim, config, config.animate.lerp)
+		config = configAnim
+	} else {
+		configAnim = config	
+	}
 
 	ctx.setTransform(1, 0, 0, 1, 0, 0)
 	ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -20,7 +37,7 @@ export function setup({ config, ctx, canvas }) {
 	ctx.translate(canvas.width / 2, canvas.height * 0.9)
 	ctx.rotate(-Math.PI / 2)
 
-	ctx.lineWidth = 6;
+	ctx.lineWidth = config.width;
 
 	const rng = new Prando(config.randomSeed)
 	tree({ config, ctx, rng })
@@ -29,8 +46,8 @@ export function setup({ config, ctx, canvas }) {
 function tree({ config, ctx, rng }, n = config.iterations) {
 	if (n <= 0) return
 
-	const l = rng.next() * config.length
-	const t = (rng.next() - 0.5) * config.angle
+	const l = sample(config.length, rng)
+	const t = sample(config.angle, rng)
 	const midpt = { x: l, y: 0 }
 	const endpt = { x: midpt.x + l * Math.cos(t), y: l * Math.sin(t) }
 
@@ -50,3 +67,24 @@ function tree({ config, ctx, rng }, n = config.iterations) {
 
 	ctx.restore()
 }
+
+const lerp = (a, b, delta) => {
+	if (typeof a !== typeof b) return b
+
+	if (typeof b === 'number') {
+		if (isNaN(b)) return a
+		if (Math.abs(a - b) < (Math.abs(b) / 10000)) return b
+		return a * (1 - delta) + b * delta
+	}
+
+	if (Array.isArray(b)) {
+		if (a.length === b.length) return b.map((val, i) => lerp(a[i], val, delta))
+	}
+
+	if (typeof b === 'object') {
+		return Object.fromEntries(Object.entries(b).map(([key, val]) => [key, lerp(a[key], val, delta)]))
+	}
+
+	return b
+}
+
