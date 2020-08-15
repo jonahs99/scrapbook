@@ -1,33 +1,33 @@
-import { tweak } from 'https://cdn.jsdelivr.net/gh/jonahs99/doodle/lib.js'
+import { tweak } from '../lib.js'
 
 const TAU = 2 * Math.PI
 
 export const config = () =>
 	tweak.label('WAVE:', {
-		rows: tweak.integer(18),
+		rows: tweak.integer(12),
 		cols: tweak.integer(12),
-		size: 30,
+		size: 40,
 
-		color: tweak.select('black', 'red', 'blue', 'orange'),
+		color: tweak.select('#113'),
 
 		phases: [
 			{
 				enabled: true,
-				size: 0.4,
+				size: 0.3,
 				period:10,
 				x: 17,
 				y: 10,
 			},
 			{
 				enabled: true,
-				size: 0.4,
+				size: 0.3,
 				period: 7,
 				x: 0,
 				y: 11,
 			},
 			{
 				enabled: true,
-				size: 0.6,
+				size: 0.3,
 				period: -19,
 				x: 0,
 				y: 13,
@@ -44,7 +44,7 @@ export const draw = ({ config, ctx, canvas }) => {
 	ctx.clearRect(0, 0, canvas.width, canvas.height)
 	ctx.translate(canvas.width / 2, canvas.height / 2)
 
-	ctx.globalAlpha = 0.1
+	ctx.globalAlpha = 0.2
 	ctx.fillStyle = config.color
 
 	ctx.save()

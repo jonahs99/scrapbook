@@ -1,19 +1,35 @@
-import { tweak, sample, Prando } from 'https://cdn.jsdelivr.net/gh/jonahs99/doodle/lib.js'
+import { tweak, sample, Prando } from '../lib.js'
 
 export function config() {
 	return tweak.label('TREE:', {
+		animate: tweak.union({
+			off: undefined,
+			lerp: tweak.number(0.01, 0.01, 0.01, 1),
+		}),
 		iterations: tweak.integer(26),
 		width: 6,
 		decay: 0.89,
 		branchPrb: 0.24,
-		length: distribution({ normal: { mean: 40, stddev: 10 } }),
-		angle: distribution({ normal: { mean: 0, stddev: 0.5 } }),
+		length: tweak.distribution({ normal: { mean: 40, stddev: 10 } }),
+		angle: tweak.distribution({ normal: { mean: 0, stddev: 0.5 } }),
 		randomSeed: tweak.integer(154),
 	})
 }
 
+const anim = 0.02
+let configAnim
+
 export function setup({ config, ctx, canvas }) {
 	canvas.style.background = '#eee'
+}
+
+export function draw({ config, ctx, canvas }) {
+	if (config.animate.lerp) {
+		configAnim = lerp(configAnim, config, config.animate.lerp)
+		config = configAnim
+	} else {
+		configAnim = config	
+	}
 
 	ctx.setTransform(1, 0, 0, 1, 0, 0)
 	ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -52,16 +68,23 @@ function tree({ config, ctx, rng }, n = config.iterations) {
 	ctx.restore()
 }
 
-// Temporarily copied from tweak until cdn updates
-const distribution = (value) => {
-	let options = {
-		constant: 1,
-		uniform: { min: 0, max: 1 },
-		normal: { mean: 0, stddev: 1 },
+const lerp = (a, b, delta) => {
+	if (typeof a !== typeof b) return b
+
+	if (typeof b === 'number') {
+		if (isNaN(b)) return a
+		if (Math.abs(a - b) < (Math.abs(b) / 10000)) return b
+		return a * (1 - delta) + b * delta
 	}
-	if (value) {
-		delete options[Object.keys(value)[0]];
-		options = { ...value, ...options }
+
+	if (Array.isArray(b)) {
+		if (a.length === b.length) return b.map((val, i) => lerp(a[i], val, delta))
 	}
-	return tweak.union(options)
+
+	if (typeof b === 'object') {
+		return Object.fromEntries(Object.entries(b).map(([key, val]) => [key, lerp(a[key], val, delta)]))
+	}
+
+	return b
 }
+
