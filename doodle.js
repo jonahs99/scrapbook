@@ -10,7 +10,17 @@ export function mountDoodle(doodle, canvas, configContainer) {
 		const doodleParams = () => ({ config, canvas, ctx })
 
 		// For now, call setup on every config change
-		if (doodle.setup) doodle.setup(doodleParams())
+		if (doodle.setup) {
+			const setupGen = doodle.setup(doodleParams())
+			if (setupGen) {
+				const drive = () => {
+					if (!setupGen.next().done) {
+						requestAnimationFrame(drive)
+					}
+				}
+				drive()
+			}
+		}
 
 		if (doodle.draw) {
 			const loop = () => {

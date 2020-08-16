@@ -59,7 +59,7 @@ export function select(...options) {
 export function union(pattern) {
     return taggedUnion(mapObject(pattern, field));
 }
-export const number = valueField((value, step = Math.abs(value || 1 / 100).toPrecision(1), min, max, units) => (value, setValue) => html `
+export const number = valueField((value, step = Math.abs((value || 1) / 100).toPrecision(1), min, max, units) => (value, setValue) => html `
 	<span class="field field__boolean">
 		<input type="number" step=${step} min=${min} max=${max}
 			.value=${value}

@@ -84,7 +84,7 @@ export function union<P extends { [key: string]: any }>(pattern: P) {
 	return taggedUnion(mapObject(pattern, field))
 }
 
-export const number = valueField((value: number, step=Math.abs(value||1/100).toPrecision(1), min?: number, max?: number, units?: string) => (value, setValue) => html`
+export const number = valueField((value: number, step=Math.abs((value||1)/100).toPrecision(1), min?: number, max?: number, units?: string) => (value, setValue) => html`
 	<span class="field field__boolean">
 		<input type="number" step=${step} min=${min} max=${max}
 			.value=${value}
