@@ -3,22 +3,22 @@ import { tweak } from '../lib.js'
 export function config() {
 	return tweak.label('Ganado:', {
 		test: false,
-		iterations: tweak.integer(1),
+		iterations: tweak.integer(4),
 	  model: [{
 				angle: tweak.number(60,1,0,360),
-				length: tweak.number(100,1,1,100)
+				length: tweak.number(1,1,1,100)
 			}, {
 				angle: 300,
-				length: 100
+				length: 1
 			}, {
 				angle: tweak.number(60,1,0,360),
-				length: tweak.number(100,1,1,100)
+				length: tweak.number(1,1,1,100)
 			}, {
 				angle: 300,
-				length: 100
+				length: 1
 			}
 	],
-		lineWidth: 2
+		lineWidth: tweak.number(1,1,1,10)
 	})
 }
 
@@ -57,6 +57,7 @@ function drawPath( figure, ctx ) {
 	figure.forEach(vector => {
     ctx.lineTo(vector.endpt.x, vector.endpt.y)
 	})
+	ctx.setTransform(1, 0, 0, 1, 0, 0)
 	ctx.stroke()
 }
 
@@ -71,6 +72,28 @@ function figurePath(figure) {
 	return figure
 }
 
+function configureContext(canvas, ctx, figureDimensions) {
+	const figureWidth = figureDimensions.x_max-figureDimensions.x_min
+	const figureHeight = figureDimensions.y_max-figureDimensions.y_min
+  const hScale = canvas.width/figureWidth
+	const vScale = canvas.height/figureHeight
+	const ctxScale = Math.min(hScale, vScale)
+  const hPos = -(figureWidth / 2 + figureDimensions.x_min)
+	const vPos = -(figureHeight / 2 + figureDimensions.y_min)
+
+	canvas.style.background = '#eee'
+	ctx.setTransform(1, 0, 0, 1, 0, 0)
+	ctx.clearRect(0, 0, canvas.width, canvas.height)
+	// ctx.translate(canvas.width / 2, canvas.height / 2)
+  //ctx.rotate(Math.PI)
+	ctx.lineWidth = config.lineWidth
+
+	ctx.translate(canvas.width / 2, canvas.height / 2)
+	ctx.scale(ctxScale,ctxScale)
+	ctx.translate(hPos, vPos)
+  //ctx.stroke()
+}
+
 function vectorEndpoint(vector, beginpt) {
 	let endpt = {
 		x: beginpt.x + vector.length * dCos(vector.angle),
@@ -80,13 +103,13 @@ function vectorEndpoint(vector, beginpt) {
 }
 
 function figureDimensions(figure) {
-	let xs = figure.map( segment => [segment.beginpt.x, segment.endpt.x])
-	let ys = figure.map( segment => [segment.beginpt.y, segment.endpt.y])
-  let dimensions = {
-		x_min:Math.min(...xs),
-		x_max:Math.max(...xs),
-		y_min:Math.min(...ys),
-		y_max:Math.max(...ys)
+	let xs = figure.map(segment => [segment.beginpt.x, segment.endpt.x]).flat()
+	let ys = figure.map(segment => [segment.beginpt.y, segment.endpt.y]).flat()
+	let dimensions = {
+		x_min: Math.min(...xs),
+		x_max: Math.max(...xs),
+		y_min: Math.min(...ys),
+		y_max: Math.max(...ys)
 	}
   return dimensions
 }
@@ -102,23 +125,6 @@ function figureRotate(figure, rotation) {
 		vector.angle = (vector.angle + rotation) % 360
 	})
 	return _figure
-}
-
-function configureContext(canvas, ctx, figureDimensions) {
-	const figureWidth = figureDimensions.x_max-figureDimensions.x_min
-	const figureHeight = figureDimensions.y_max-figureDimensions.y_min
-	const hPos = (figureDimensions.x_min/figureWidth)*figureDimensions.x_min
-	const vPos = figureDimensions.y_min/figureHeight
-
-	const ctxScale = Math.min(figureWidth/canvas.width,figureHeight/canvas.height)
-
-	canvas.style.background = '#eee'
-	// ctx.setTransform(1, 0, 0, 1, 0, 0)
-	ctx.clearRect(0, 0, canvas.width, canvas.height)
-	// ctx.translate(canvas.width / 2, canvas.height / 2)
-	//ctx.translate(hPos, vPos)
-	//ctx.scale(ctxScale,ctxScale)
-	ctx.lineWidth = config.lineWidth
 }
 
 function dSin(deg) {
