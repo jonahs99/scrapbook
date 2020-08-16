@@ -1,11 +1,10 @@
 import { tweak, sample, Prando } from '../lib.js'
 
+let configAnim
+
 export function config() {
 	return tweak.label('TREE:', {
-		animate: tweak.union({
-			off: undefined,
-			lerp: tweak.number(0.01, 0.01, 0.01, 1),
-		}),
+		animate: tweak.maybe(tweak.number(0.01, 0.01, 0.01, 1)),
 		iterations: tweak.integer(26),
 		width: 6,
 		decay: 0.89,
@@ -16,16 +15,13 @@ export function config() {
 	})
 }
 
-const anim = 0.02
-let configAnim
-
 export function setup({ config, ctx, canvas }) {
 	canvas.style.background = '#eee'
 }
 
 export function draw({ config, ctx, canvas }) {
-	if (config.animate.lerp) {
-		configAnim = lerp(configAnim, config, config.animate.lerp)
+	if (config.animate !== undefined) {
+		configAnim = lerp(configAnim, config, config.animate)
 		config = configAnim
 	} else {
 		configAnim = config	
@@ -87,4 +83,3 @@ const lerp = (a, b, delta) => {
 
 	return b
 }
-

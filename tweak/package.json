@@ -1,0 +1,12 @@
+{
+  "name": "tweak",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "devDependencies": {
+    "typescript": "^3.9.7"
+  },
+  "dependencies": {
+    "lit-html": "^1.2.1"
+  }
+}
