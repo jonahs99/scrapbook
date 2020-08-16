@@ -12,27 +12,24 @@ export const config = () =>
 
 		phases: [
 			{
-				enabled: true,
 				size: 0.3,
 				period:10,
 				x: 17,
 				y: 10,
 			},
 			{
-				enabled: true,
 				size: 0.3,
 				period: 7,
 				x: 0,
 				y: 11,
 			},
 			{
-				enabled: true,
 				size: 0.3,
 				period: -19,
 				x: 0,
 				y: 13,
 			},
-		],
+		].map((phase) => tweak.maybe(phase, true)),
 	})
 
 export const setup = ({ config, canvas, ctx }) => {
@@ -55,8 +52,7 @@ export const draw = ({ config, ctx, canvas }) => {
 	for (let i = 0; i < config.rows; i++) {
 		for (let j = 0; j < config.cols; j++) {
 			let rad = 0
-			for (const { enabled, size, period, x, y } of config.phases) {
-				if (!enabled) continue
+			for (const { size, period, x, y } of config.phases.filter(Boolean)) {
 				const freq = period && (1 / period)
 				const ifreq = y && (1 / y)
 				const jfreq = x && (1 / x)
@@ -75,4 +71,3 @@ export const draw = ({ config, ctx, canvas }) => {
 
 	ctx.restore()
 }
-

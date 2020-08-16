@@ -1,4 +1,4 @@
-import * as tweak from './tweak/index.js'
+import * as tweak from './tweak/dist/index.js'
 
 export function mountDoodle(doodle, canvas, configContainer) {
 	const ctx = canvas.getContext('2d')	

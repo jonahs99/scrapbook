@@ -1,0 +1,11 @@
+{
+	"compilerOptions": {
+		"declaration": true,
+		"outDir": "dist",
+		"module": "es6",
+		"target": "es2020",
+		"strict": true
+	},
+	"include": ["src"]
+}
+

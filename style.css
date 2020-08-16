@@ -1,4 +1,4 @@
-@import '../tweak/tweak.css';
+@import './tweak/tweak.css';
 
 body, html {
 	height: 100%;

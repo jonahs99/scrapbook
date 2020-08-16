@@ -1,2 +1,1 @@
-# Easy forms for quick doodles
-
+# Quick forms for quick doodles

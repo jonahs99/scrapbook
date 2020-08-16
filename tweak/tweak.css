@@ -29,6 +29,11 @@
 	text-align: left;
 }
 
+.field__maybe-disabled {
+	opacity: 0.2;
+	pointer-events: none;
+}
+
 input, select, button {
 	border: none;
 	background: #eee;

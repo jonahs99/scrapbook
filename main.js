@@ -7,5 +7,5 @@ const script = (scripts.includes(location.search.substr(1)) && location.search.s
 import(`./doodles/${script}.js`).then(doodle => {
 	const canvas = document.querySelector('canvas')
 	const configContainer = document.querySelector('.config-container')
-	mountDoodle(doodle, canvas, configContainer)
+	mountDoodle(doodle.default ?? doodle, canvas, configContainer)
 })
