@@ -22,25 +22,31 @@ See
         decay: 0.7,
     },
 
+    color: {
+        background: '#eee',
+        line: '#444',
+    },
+
     renderEvery: tweak.integer(1000),
 }), {
     *setup({ config, canvas, ctx }) {
-        canvas.style.background = '#eee'
+        canvas.style.background = config.color.background
+        ctx.strokeStyle = config.color.line
         
         const rng = new Prando(config.randomSeed)
 
-        ctx.strokeStyle = '#444'
-
         const lines = []
         const longLines = []
-        const grid = {}
+		const grid = {}
+		const gridSize = config.speed
 
+        //console.log(config.randomSeed,rng.next(0, 2 * Math.PI))
         let dir = rng.next(0, 2*Math.PI)
         let pen = polar(dir, -config.radius)
         let weight = config.line.weight
         for (let i = 0; i < config.iterations; i++) {
-            const penHash = hash(pen, config.speed)
-            const nbrs = nbr(pen, config.speed)
+            const penHash = hash(pen, gridSize)
+            const nbrs = nbr(pen, gridSize)
 
             dir += rng.next(-config.wander, config.wander)
             let d = polar(dir, config.speed)
@@ -74,17 +80,22 @@ See
                 ctx.clearRect(0, 0, canvas.width, canvas.height)
                 ctx.translate(canvas.width / 2, canvas.height / 2)
                 ctx.scale(1, -1)
-                ctx.lineCap = 'round'
-                for (const {seg: [s, d], weight} of lines) {
-                    ctx.beginPath()
-                    ctx.moveTo(s.x, s.y)
-                    ctx.lineTo(s.x + d.x, s.y + d.y)
+				let lastPt
+				for (const {seg: [s, d], weight} of lines) {
+					if (s.x !== lastPt?.x || s.y !== lastPt?.y) {
+                    	if (lastPt) ctx.stroke()
+						ctx.beginPath()
+						ctx.moveTo(s.x, s.y)
+					}
+					lastPt = add(s, d)
+					ctx.lineTo(lastPt.x, lastPt.y)
                     ctx.lineWidth = weight
-                    ctx.stroke()
-                }
+				}
+				ctx.stroke()
                 yield
             }
-        }
+		}
+		console.log(grid)
     },
 })
 
