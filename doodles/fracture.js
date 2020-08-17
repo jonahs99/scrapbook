@@ -1,23 +1,35 @@
 import { tweak, Prando } from '../lib.js'
 
-export default tweak.doodle(() => tweak.label('FRACTURE (from Inconvergent):', {
-    randomSeed: tweak.integer(3),
+export default tweak.doodle(() => tweak.describe(`
+<pre>
+<b>FRACTURE</b>
+See
+<a href="http://www.complexification.net/gallery/machines/substrate/">Substrate (Jared Tarbell)</a>
+<a href="https://inconvergent.net/generative/fractures/">Fractures (inconvergent)</a>
+</pre>
+`, {
+    randomSeed: tweak.integer(5),
     radius: 400,
-    iterations: tweak.integer(20000),
-    speed: 40,
+
+    iterations: tweak.integer(40000),
+    speed: 24,
     wander: 0.3,
     angle: 0.1,
-    weight: 4,
-    decay: 0.75,
-    sourceThresh: tweak.number(0.2, 0.01, 0, 1),
+    lengthThreshold: tweak.number(0.3, 0.01, 0, 1),
+
+    line: {
+        weight: 5,
+        decay: 0.7,
+    },
+
+    renderEvery: tweak.integer(1000),
 }), {
     *setup({ config, canvas, ctx }) {
         canvas.style.background = '#eee'
         
         const rng = new Prando(config.randomSeed)
 
-        ctx.strokeStyle = '#222'
-        ctx.lineWidth = 3
+        ctx.strokeStyle = '#444'
 
         const lines = []
         const longLines = []
@@ -25,15 +37,15 @@ export default tweak.doodle(() => tweak.label('FRACTURE (from Inconvergent):', {
 
         let dir = rng.next(0, 2*Math.PI)
         let pen = polar(dir, -config.radius)
-        let weight = config.weight
+        let weight = config.line.weight
         for (let i = 0; i < config.iterations; i++) {
             const penHash = hash(pen, config.speed)
             const nbrs = nbr(pen, config.speed)
 
             dir += rng.next(-config.wander, config.wander)
-            let d = polar(dir, config.speed)//exp(config.speed, rng))
+            let d = polar(dir, config.speed)
             const targets = nbrs.flatMap(h => grid[h] ?? [])
-            const t = Math.min(1, ...targets.map(({seg}) => hit([pen, d], seg)).filter(t => !isNaN(t) && t > 0)) 
+            const t = Math.min(1, ...targets.map(({seg}) => hit([pen, d], seg)).filter(t => !isNaN(t) && t > 0.01)) 
             if (t < 1) {
                 d = scale(d, t)
             }
@@ -41,7 +53,7 @@ export default tweak.doodle(() => tweak.label('FRACTURE (from Inconvergent):', {
             const seg = [pen, d]
             const line = { seg, weight }
             lines.push(line)
-            if (t > config.sourceThresh) longLines.push(line)
+            if (t > config.lengthThreshold) longLines.push(line)
 
             // Add line to the spatial hash
             grid[penHash] = grid[penHash] ?? []
@@ -50,14 +62,14 @@ export default tweak.doodle(() => tweak.label('FRACTURE (from Inconvergent):', {
             pen = add(pen, d)
 
             if (t < 1 || mag2(pen) > config.radius*config.radius) {
-                const line = rng.nextArrayItem(longLines)// lines[rng.nextInt(0, lines.length-1)]
+                const line = rng.nextArrayItem(longLines)
                 pen = add(line.seg[0], scale(line.seg[1], rng.next()))
                 dir = heading(line.seg[1]) + Math.PI / 2 + (rng.nextInt(0, 1) * Math.PI)
                     + rng.next(-config.angle, config.angle)
-                weight = line.weight * config.decay
+                weight = line.weight * config.line.decay
             }
 
-            if (i % 1000 === 999 || i === config.iterations - 1) {
+            if (i % config.renderEvery === config.renderEvery - 1 || i === config.iterations - 1) {
                 ctx.setTransform(1, 0, 0, 1, 0, 0)
                 ctx.clearRect(0, 0, canvas.width, canvas.height)
                 ctx.translate(canvas.width / 2, canvas.height / 2)

@@ -20,6 +20,7 @@ declare type InferState<P> = [P] extends [Field<infer _T, infer S>] ? S : [P] ex
 export declare function field<P>(pattern: P): Infer<P>;
 /** Labelled field */
 export declare function label<P>(text: string, pattern: P): Infer<P>;
+export declare function describe<P>(content: string, pattern: P): Infer<P>;
 /** Can be disabled */
 export declare function maybe<P>(pattern: P, on?: boolean): Field<undefined | InferValue<P>, {
     on: boolean;

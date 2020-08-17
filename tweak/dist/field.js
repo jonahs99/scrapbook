@@ -20,6 +20,9 @@ export function field(pattern) {
 export function label(text, pattern) {
     return mapTemplate(field(pattern), (inner) => labeled(text, inner));
 }
+export function describe(content, pattern) {
+    return mapTemplate(field(pattern), (inner) => described(content, inner));
+}
 /** Can be disabled */
 export function maybe(pattern, on = false) {
     const enable = field(on);
@@ -115,6 +118,13 @@ function labeled(text, inner) {
     return html `
 		<div class="field field__label">
 			<span>${text}</span>${inner}
+		</div>
+	`;
+}
+function described(content, inner) {
+    return html `
+		<div class="field field__describe">
+			<span .innerHTML=${content}></span>${inner}
 		</div>
 	`;
 }

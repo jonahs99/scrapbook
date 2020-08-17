@@ -41,6 +41,10 @@ export function label<P>(text: string, pattern: P): Infer<P> {
 	return mapTemplate<any, any>(field(pattern), (inner) => labeled(text, inner)) as any
 }
 
+export function describe<P>(content: string, pattern: P): Infer<P> {
+	return mapTemplate<any, any>(field(pattern), (inner) => described(content, inner)) as any
+}
+
 /** Can be disabled */
 export function maybe<P>(pattern: P, on=false):
 	Field<undefined | InferValue<P>, { on: boolean, state: InferState<P> }> {
@@ -160,6 +164,14 @@ function labeled(text: string, inner: TemplateResult): TemplateResult {
 	return html`
 		<div class="field field__label">
 			<span>${text}</span>${inner}
+		</div>
+	`
+}
+
+function described(content: string, inner: TemplateResult): TemplateResult {
+	return html`
+		<div class="field field__describe">
+			<span .innerHTML=${content}></span>${inner}
 		</div>
 	`
 }
