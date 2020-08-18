@@ -57,7 +57,6 @@ export function maybe<P>(pattern: P, on=false):
 		},
 		template: (state, set) => html`
 			${enable.template(state.on, (on) => set({ ...state, on }))}
-			<!-- <span class=${`field field__maybe ${!state.on ? 'field__maybe-disabled' : ''}`}> -->
 			<span class=${!state.on ? 'field__maybe-disabled' : ''}>
 				${inner.template(state.state, (newState) => set({ ...state, state: newState }))}
 			</span>
@@ -107,6 +106,16 @@ export function integer(value: number, min?: number, max?: number, units?: strin
 
 export function degrees(value: number, step?: number, min?: number, max?: number) {
 	return number(value, step, min, max, '°')
+}
+
+export function randomSeed(value?: number) {
+	const rand = () => Math.floor(Math.random() * 2147483647)
+	return mapTemplate(integer(value ?? rand()), (inner, _state, set) => html`
+		${inner}
+		<button
+			@click=${() => set(rand())}
+		>&#9858;</button>
+	`)
 }
 
 export function distribution(value?: ContinuousDistribution) {

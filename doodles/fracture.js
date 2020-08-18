@@ -8,14 +8,15 @@ See
 <a href="https://inconvergent.net/generative/fractures/">Fractures (inconvergent)</a>
 </pre>
 `, {
-    randomSeed: tweak.integer(5),
+    randomSeed: tweak.randomSeed(),
     radius: 400,
 
     iterations: tweak.integer(40000),
     speed: 24,
+    speedDecay: 0.9,
     wander: 0.3,
     angle: 0.1,
-    lengthThreshold: tweak.number(0.3, 0.01, 0, 1),
+    lengthThreshold: tweak.number(0.2, 0.01, 0, 1),
 
     line: {
         weight: 5,
@@ -28,6 +29,7 @@ See
     },
 
     renderEvery: tweak.integer(1000),
+    showProgress: false,
 }), {
     *setup({ config, canvas, ctx }) {
         canvas.style.background = config.color.background
@@ -44,12 +46,13 @@ See
         let dir = rng.next(0, 2*Math.PI)
         let pen = polar(dir, -config.radius)
         let weight = config.line.weight
+        let speed = config.speed
         for (let i = 0; i < config.iterations; i++) {
             const penHash = hash(pen, gridSize)
             const nbrs = nbr(pen, gridSize)
 
             dir += rng.next(-config.wander, config.wander)
-            let d = polar(dir, config.speed)
+            let d = polar(dir, speed)
             const targets = nbrs.flatMap(h => grid[h] ?? [])
             const t = Math.min(1, ...targets.map(({seg}) => hit([pen, d], seg)).filter(t => !isNaN(t) && t > 0.01)) 
             if (t < 1) {
@@ -57,7 +60,7 @@ See
             }
 
             const seg = [pen, d]
-            const line = { seg, weight }
+            const line = { seg, weight, speed }
             lines.push(line)
             if (t > config.lengthThreshold) longLines.push(line)
 
@@ -73,6 +76,7 @@ See
                 dir = heading(line.seg[1]) + Math.PI / 2 + (rng.nextInt(0, 1) * Math.PI)
                     + rng.next(-config.angle, config.angle)
                 weight = line.weight * config.line.decay
+                speed = line.speed * config.speedDecay
             }
 
             if (i % config.renderEvery === config.renderEvery - 1 || i === config.iterations - 1) {
@@ -91,7 +95,23 @@ See
 					ctx.lineTo(lastPt.x, lastPt.y)
                     ctx.lineWidth = weight
 				}
-				ctx.stroke()
+                ctx.stroke()
+                
+                if (config.showProgress) {
+                    ctx.save()
+                    ctx.scale(canvas.width, canvas.height)
+                    ctx.translate(-0.5, -0.5)
+                    ctx.beginPath()
+                    ctx.moveTo(i / config.iterations, 0)
+                    ctx.lineTo(1, 0)
+                    ctx.restore()
+                    ctx.save()
+                    ctx.lineWidth = 10
+                    ctx.strokeStyle = '#ccc'
+                    ctx.stroke()
+                    ctx.restore()
+                }
+
                 yield
             }
 		}

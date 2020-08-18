@@ -6,7 +6,7 @@ const scripts = [
 	'flutter',
 	'fracture',
 ]
-const script = (scripts.includes(location.search.substr(1)) && location.search.substr(1)) ||
+const script = (scripts.includes(location.search.substr(1)) && location.search.substr(1).toLowerCase()) ||
 	scripts[Math.floor(Math.random() * scripts.length)]
 
 import(`./doodles/${script}.js`).then(doodle => {

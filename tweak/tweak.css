@@ -72,4 +72,6 @@ button {
 	background: #666;
 	color: white;
 	width: 1.6em;
+	line-height: 1.6em;
+	height: 1.6em;
 }

@@ -11,7 +11,7 @@ export function config() {
 		branchPrb: 0.24,
 		length: tweak.distribution({ normal: { mean: 40, stddev: 10 } }),
 		angle: tweak.distribution({ normal: { mean: 0, stddev: 0.5 } }),
-		randomSeed: tweak.integer(154),
+		randomSeed: tweak.randomSeed(154),
 	})
 }
 

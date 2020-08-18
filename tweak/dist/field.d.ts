@@ -38,6 +38,7 @@ export declare function union<P extends {
 export declare const number: (value: number, step?: R[0] | undefined, min?: number | undefined, max?: number | undefined, units?: string | undefined) => Field<number, number>;
 export declare function integer(value: number, min?: number, max?: number, units?: string): Field<number, number>;
 export declare function degrees(value: number, step?: number, min?: number, max?: number): Field<number, number>;
+export declare function randomSeed(value?: number): Field<number, number>;
 export declare function distribution(value?: ContinuousDistribution): Field<ValueOf<{
     uniform: Pick<{
         uniform: {

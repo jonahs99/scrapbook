@@ -34,7 +34,6 @@ export function maybe(pattern, on = false) {
         },
         template: (state, set) => html `
 			${enable.template(state.on, (on) => set({ ...state, on }))}
-			<!-- <span class=${`field field__maybe ${!state.on ? 'field__maybe-disabled' : ''}`}> -->
 			<span class=${!state.on ? 'field__maybe-disabled' : ''}>
 				${inner.template(state.state, (newState) => set({ ...state, state: newState }))}
 			</span>
@@ -80,6 +79,15 @@ export function integer(value, min, max, units) {
 }
 export function degrees(value, step, min, max) {
     return number(value, step, min, max, '°');
+}
+export function randomSeed(value) {
+    const rand = () => Math.floor(Math.random() * 2147483647);
+    return mapTemplate(integer(value ?? rand()), (inner, _state, set) => html `
+		${inner}
+		<button
+			@click=${() => set(rand())}
+		>&#9858;</button>
+	`);
 }
 export function distribution(value) {
     return union(assignFirst({

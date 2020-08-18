@@ -7,10 +7,22 @@ body, html {
 }
 
 body {
+	position: relative;
 	display: grid;
 	grid-template-columns: 1fr minmax(24em, 20%);
+	overflow: hidden;
 
 	font-size: 1.6vh;
+}
+
+body.config-closed {
+	grid-template-columns: 1fr 0;
+}
+
+.canvas-container {
+	grid-column: 1;
+	grid-row: 1;
+	height: 100vh;
 }
 
 canvas {
@@ -22,7 +34,28 @@ canvas {
 }
 
 .config-container {
+	grid-column: 2;
+	grid-row: 1;
+
 	padding: 8px;
 	overflow: auto;
 }
 
+.control-panel {
+	grid-column: 1;
+	grid-row: 1;
+	justify-self: right;
+	align-self: end;
+	opacity: 0;
+}
+.control-panel:hover {
+	opacity: 0.6;
+}
+body.config-closed .control-panel {
+	align-self: stretch;
+}
+
+.control-panel > button {
+	width: unset;
+	margin: 1em;
+}
