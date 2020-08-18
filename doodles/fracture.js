@@ -25,7 +25,7 @@ See
 
     color: {
         background: '#eee',
-        line: '#444',
+        line: '#222',
     },
 
     renderEvery: tweak.integer(1000),

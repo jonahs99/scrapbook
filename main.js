@@ -1,10 +1,11 @@
 import { mountDoodle } from './doodle.js'
 
 const scripts = [
-	'wave',
-	'tree',
+	'coast',
 	'flutter',
 	'fracture',
+	'tree',
+	'wave',
 ]
 const script = (scripts.includes(location.search.substr(1)) && location.search.substr(1).toLowerCase()) ||
 	scripts[Math.floor(Math.random() * scripts.length)]

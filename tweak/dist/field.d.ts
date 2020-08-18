@@ -18,6 +18,7 @@ declare type InferState<P> = [P] extends [Field<infer _T, infer S>] ? S : [P] ex
 } : never;
 /** Dynamically creates a field from the shape of the pattern. Compose fields with objects and homogenous lists */
 export declare function field<P>(pattern: P): Infer<P>;
+export declare function copyable<P>(pattern: P): Infer<P>;
 /** Labelled field */
 export declare function label<P>(text: string, pattern: P): Infer<P>;
 export declare function describe<P>(content: string, pattern: P): Infer<P>;

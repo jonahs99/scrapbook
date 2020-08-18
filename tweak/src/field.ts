@@ -36,6 +36,21 @@ export function field<P>(pattern: P) {
 	console.error(`Could not infer field for pattern ${pattern}`)
 }
 
+export function copyable<P>(pattern: P): Infer<P> {
+	return mapTemplate<any, any>(field(pattern), (inner, state, set) => html`
+		${inner}
+		<button
+			@click=${() => navigator.clipboard.writeText(state && JSON.stringify(state, undefined, '\t'))}
+		>COPY</button>
+		<button
+			@click=${() => {
+				const json = prompt('Enter a JSON state string')
+				if (json) set(JSON.parse(json))
+			}}
+		>PASTE</button>
+	`)
+}
+
 /** Labelled field */
 export function label<P>(text: string, pattern: P): Infer<P> {
 	return mapTemplate<any, any>(field(pattern), (inner) => labeled(text, inner)) as any

@@ -16,6 +16,21 @@ export function field(pattern) {
         return object(mapObject(mapObject(pattern, field), (field, key) => label(`${key}:`, field)));
     console.error(`Could not infer field for pattern ${pattern}`);
 }
+export function copyable(pattern) {
+    return mapTemplate(field(pattern), (inner, state, set) => html `
+		${inner}
+		<button
+			@click=${() => navigator.clipboard.writeText(state && JSON.stringify(state, undefined, '\t'))}
+		>COPY</button>
+		<button
+			@click=${() => {
+        const json = prompt('Enter a JSON state string');
+        if (json)
+            set(JSON.parse(json));
+    }}
+		>PASTE</button>
+	`);
+}
 /** Labelled field */
 export function label(text, pattern) {
     return mapTemplate(field(pattern), (inner) => labeled(text, inner));

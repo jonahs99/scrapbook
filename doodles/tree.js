@@ -4,14 +4,14 @@ let configAnim
 
 export function config() {
 	return tweak.label('TREE:', {
-		animate: tweak.maybe(tweak.number(0.01, 0.01, 0.01, 1)),
+		randomSeed: tweak.randomSeed(154),
 		iterations: tweak.integer(26),
 		width: 6,
 		decay: 0.89,
 		branchPrb: 0.24,
 		length: tweak.distribution({ normal: { mean: 40, stddev: 10 } }),
 		angle: tweak.distribution({ normal: { mean: 0, stddev: 0.5 } }),
-		randomSeed: tweak.randomSeed(154),
+		animate: tweak.maybe(tweak.number(0.1, 0.01, 0.01, 1)),
 	})
 }
 
