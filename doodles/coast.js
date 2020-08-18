@@ -22,6 +22,9 @@ See
         ctx.clearRect(0, 0, canvas.width, canvas.height)
         ctx.translate(canvas.width / 2, canvas.height / 2)
         ctx.scale(1, -1)
+
+        ctx.fillStyle = '#000'
+        ctx.globalAlpha = config.opacity
         
         const rng = new Prando(config.randomSeed)
 
@@ -29,6 +32,7 @@ See
         for (let i = 0; i < config.start.n; i++) {
             pts.push(polar(rng.next(0, 2 * Math.PI), config.start.radius))
         }
+        fill(ctx, pts)
         for (let i = 0; i < config.iterations; i++) {
             const midpts = pts.map((pt, i) => {
                 const j = (i + 1) % pts.length
@@ -36,18 +40,19 @@ See
                 return add(scale(pt, 0.5), scale(pts[j], 0.5), polar(rng.next(0, 2 * Math.PI), disp * config.displacement))
             })
             pts = pts.flatMap((pt, i) => [pt, midpts[i]])
-
-            ctx.beginPath()
-            for (const pt of pts) {
-                ctx.lineTo(pt.x , pt.y)
-            }
-            ctx.closePath()
-            ctx.fillStyle = '#000'
-            ctx.globalAlpha = config.opacity
-            ctx.fill()
+            fill(ctx, pts)
         }
     }
 })
+
+function fill(ctx, pts) {
+    ctx.beginPath()
+    for (const pt of pts) {
+        ctx.lineTo(pt.x , pt.y)
+    }
+    ctx.closePath()
+    ctx.fill()
+}
 
 const vec = (x, y) => ({x, y})
 const polar = (t, r=1) => vec(Math.cos(t) * r, Math.sin(t) * r)
