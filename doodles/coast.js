@@ -10,10 +10,10 @@ See
     randomSeed: tweak.randomSeed(),
     start: {
         radius: tweak.integer(400),
-        n: tweak.integer(4),
+        n: tweak.integer(3),
     },
-    iterations: tweak.integer(8),
-    displacement: 0.3,
+    iterations: tweak.integer(12),
+    displacement: 0.32,
     opacity: 0.1,
 }), {
     setup({ ctx, canvas, config }) {
@@ -32,7 +32,6 @@ See
         for (let i = 0; i < config.start.n; i++) {
             pts.push(polar(rng.next(0, 2 * Math.PI), config.start.radius))
         }
-        fill(ctx, pts)
         for (let i = 0; i < config.iterations; i++) {
             const midpts = pts.map((pt, i) => {
                 const j = (i + 1) % pts.length
@@ -47,11 +46,13 @@ See
 
 function fill(ctx, pts) {
     ctx.beginPath()
-    for (const pt of pts) {
-        ctx.lineTo(pt.x , pt.y)
+    for (let i = 0; i < pts.length-1; i+=2) {
+        ctx.moveTo(pts[i].x, pts[i].y)
+        ctx.lineTo(pts[i+1].x, pts[i+1].y)
+        ctx.lineTo(pts[(i+2)%pts.length].x, pts[(i+2)%pts.length].y)
     }
-    ctx.closePath()
     ctx.fill()
+    ctx.stroke()
 }
 
 const vec = (x, y) => ({x, y})
