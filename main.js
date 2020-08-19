@@ -4,6 +4,7 @@ const scripts = [
 	'coast',
 	'flutter',
 	'fracture',
+	'ganado',
 	'tree',
 	'wave',
 ]
@@ -15,3 +16,4 @@ import(`./doodles/${script}.js`).then(doodle => {
 	const configContainer = document.querySelector('.config-container')
 	mountDoodle(doodle.default ?? doodle, canvas, configContainer)
 })
+
