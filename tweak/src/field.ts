@@ -36,6 +36,14 @@ export function field<P>(pattern: P) {
 	console.error(`Could not infer field for pattern ${pattern}`)
 }
 
+export function map<P, T>(pattern: P, fn: (value: InferValue<P>) => T): Field<T, InferState<P>> {
+	const inner = field(pattern);
+	return {
+		...inner,
+		getValue: (state) => fn(inner.getValue(state)),
+	};
+}
+
 export function copyable<P>(pattern: P): Infer<P> {
 	return mapTemplate<any, any>(field(pattern), (inner, state, set) => html`
 		${inner}
@@ -103,10 +111,23 @@ export function union<P extends { [key: string]: any }>(pattern: P) {
 }
 
 export const number = valueField((value: number, step=Math.abs((value||1)/100).toPrecision(1), min?: number, max?: number, units?: string) => (value, setValue) => html`
-	<span class="field field__boolean">
+	<span class="field field__number">
 		<input type="number" step=${step} min=${min} max=${max}
 			.value=${value}
 			@change=${(evt: any) => {
+				const num = parseFloat(evt.target.value)
+				if (!isNaN(num)) setValue(num)
+			}}
+		>
+		${units && html`<span>${units}</span>`}
+	</span>
+`)
+
+export const slider = valueField((value: number, step=Math.abs((value||1)/100).toPrecision(1), min?: number, max?: number, units?: string) => (value, setValue) => html`
+	<span class="field field__number">
+		<input type="range" step=${step} min=${min} max=${max}
+			.value=${value}
+			@input=${(evt: any) => {
 				const num = parseFloat(evt.target.value)
 				if (!isNaN(num)) setValue(num)
 			}}

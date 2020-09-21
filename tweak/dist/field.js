@@ -16,6 +16,13 @@ export function field(pattern) {
         return object(mapObject(mapObject(pattern, field), (field, key) => label(`${key}:`, field)));
     console.error(`Could not infer field for pattern ${pattern}`);
 }
+export function map(pattern, fn) {
+    const inner = field(pattern);
+    return {
+        ...inner,
+        getValue: (state) => fn(inner.getValue(state)),
+    };
+}
 export function copyable(pattern) {
     return mapTemplate(field(pattern), (inner, state, set) => html `
 		${inner}
@@ -77,10 +84,23 @@ export function union(pattern) {
     return taggedUnion(mapObject(pattern, field));
 }
 export const number = valueField((value, step = Math.abs((value || 1) / 100).toPrecision(1), min, max, units) => (value, setValue) => html `
-	<span class="field field__boolean">
+	<span class="field field__number">
 		<input type="number" step=${step} min=${min} max=${max}
 			.value=${value}
 			@change=${(evt) => {
+    const num = parseFloat(evt.target.value);
+    if (!isNaN(num))
+        setValue(num);
+}}
+		>
+		${units && html `<span>${units}</span>`}
+	</span>
+`);
+export const slider = valueField((value, step = Math.abs((value || 1) / 100).toPrecision(1), min, max, units) => (value, setValue) => html `
+	<span class="field field__number">
+		<input type="range" step=${step} min=${min} max=${max}
+			.value=${value}
+			@input=${(evt) => {
     const num = parseFloat(evt.target.value);
     if (!isNaN(num))
         setValue(num);

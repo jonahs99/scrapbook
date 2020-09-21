@@ -1,5 +1,7 @@
 import * as tweak from './tweak/dist/index.js'
 
+import { PlotContext } from './plot/plot.js'
+
 export function mountDoodle(doodle, canvas, configContainer) {
 	const ctx = canvas.getContext('2d')	
 	let config
@@ -35,6 +37,19 @@ export function mountDoodle(doodle, canvas, configContainer) {
 	}
 	resizeCanvas()
 	window.addEventListener('resize', resizeCanvas)
+
+	const plotDoodle = () => {
+		const params = { config, canvas, ctx: new PlotContext() }
+		const setupGen = doodle.setup(params)
+		if (setupGen) {
+			for (const _ of setupGen) { }
+		}
+		if (doodle.draw) doodle.draw(params)
+		const scale = 80 / canvas.height
+		const center = { x: canvas.width / 2, y: canvas.height / 2 }
+		console.log(params.ctx.output({ scale, center }))
+	}
+	document.querySelector('#btn-plot').addEventListener('click', plotDoodle)
 
 	tweak.render(tweak.field(doodle.config()), configContainer, restartDoodle)
 }

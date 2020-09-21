@@ -18,6 +18,7 @@ declare type InferState<P> = [P] extends [Field<infer _T, infer S>] ? S : [P] ex
 } : never;
 /** Dynamically creates a field from the shape of the pattern. Compose fields with objects and homogenous lists */
 export declare function field<P>(pattern: P): Infer<P>;
+export declare function map<P, T>(pattern: P, fn: (value: InferValue<P>) => T): Field<T, InferState<P>>;
 export declare function copyable<P>(pattern: P): Infer<P>;
 /** Labelled field */
 export declare function label<P>(text: string, pattern: P): Infer<P>;
@@ -37,6 +38,7 @@ export declare function union<P extends {
     state: { [K in keyof P]: any; };
 }>;
 export declare const number: (value: number, step?: R[0] | undefined, min?: number | undefined, max?: number | undefined, units?: string | undefined) => Field<number, number>;
+export declare const slider: (value: number, step?: R[0] | undefined, min?: number | undefined, max?: number | undefined, units?: string | undefined) => Field<number, number>;
 export declare function integer(value: number, min?: number, max?: number, units?: string): Field<number, number>;
 export declare function degrees(value: number, step?: number, min?: number, max?: number): Field<number, number>;
 export declare function randomSeed(value?: number): Field<number, number>;
@@ -62,7 +64,7 @@ export declare function distribution(value?: ContinuousDistribution): Field<Valu
         };
     }, "normal">;
 }>, {
-    key: "uniform" | "normal";
+    key: "normal" | "uniform";
     state: {
         uniform: any;
         normal: any;
