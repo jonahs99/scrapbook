@@ -11,7 +11,7 @@ See
     randomSeed: tweak.randomSeed(),
     radius: 400,
 
-    iterations: tweak.integer(40000),
+    iterations: tweak.integer(1000),
     speed: 24,
     speedDecay: 0.9,
     wander: 0.3,
@@ -19,8 +19,8 @@ See
     lengthThreshold: tweak.number(0.2, 0.01, 0, 1),
 
     line: {
-        weight: 5,
-        decay: 0.7,
+        weight: 3,
+        decay: 1,
     },
 
     color: {
@@ -115,7 +115,6 @@ See
                 yield
             }
 		}
-		console.log(grid)
     },
 })
 

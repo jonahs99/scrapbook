@@ -45,7 +45,7 @@ export function mountDoodle(doodle, canvas, configContainer) {
 			for (const _ of setupGen) { }
 		}
 		if (doodle.draw) doodle.draw(params)
-		const scale = 80 / canvas.height
+		const scale = 200 / canvas.height
 		const center = { x: canvas.width / 2, y: canvas.height / 2 }
 		console.log(params.ctx.output({ scale, center }))
 	}

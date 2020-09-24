@@ -45,6 +45,7 @@ export class PlotContext {
 ;DOODLE
 ;total path: ${Math.round(len)}mm (${nSegments} segments)
 ;total travel: ${Math.round(travel)}mm
+${UP}
 ${pathCommands.join('\n')}
 `
 	}
