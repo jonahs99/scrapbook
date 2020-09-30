@@ -1,0 +1,74 @@
+.field {
+	box-sizing: border-box;
+	font-family: monospace;
+	line-height: 2em;
+}
+
+.field__label {
+	display: block;
+	font-weight: bold;
+}
+
+.field__describe p {
+	display: block;
+	margin: 0;
+}
+
+.field__object, .field__list {
+	margin: 0.5em;
+	padding: 0.5em;
+	border-radius: 2px;
+	box-shadow: 0 1px 3px #00000044;
+}
+
+.field__list {
+	border-left: 3px solid #666;
+}
+
+.field__maybe-disabled {
+	opacity: 0.2;
+	pointer-events: none;
+}
+
+input, select, button {
+	text-align: left;
+	border: none;
+	background: #eee;
+	box-shadow: 0 1px 3px #00000044;
+	border-radius: 2px;
+	font-family: monospace;
+	font-size: inherit;
+}
+
+select, input[type="checkbox"] {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+}
+
+input[type="checkbox"] {
+	margin: 0;
+	width: 1em;
+	height: 1em;
+	text-align: center;
+	font-weight: bold;
+	line-height: 1em;
+	overflow: hidden;
+	background: #666;
+	color: white;
+}
+
+input[type="checkbox"]:checked::after {
+	content: '\2713';
+}
+
+input[type="number"], input[type="text"] {
+	width: 8em;
+}
+
+button {
+	background: #666;
+	color: white;
+	width: 1.6em;
+	line-height: 1.6em;
+	height: 1.6em;
+}
