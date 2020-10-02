@@ -1,4 +1,4 @@
-@import 'field.css';
+@import './field.css';
 
 body, html {
 	height: 100%;

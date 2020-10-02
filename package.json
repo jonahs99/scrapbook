@@ -10,6 +10,7 @@
   "snowpack": {
 	"install": [
 	  "flyd/module/lift",
+	  "flyd/module/every",
 	  "flyd/module/obj"
 	]
   }
