@@ -1,6 +1,8 @@
-.field {
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime&display=fallback');
+
+.field, .config-container, pre {
 	box-sizing: border-box;
-	font-family: monospace;
+	font-family: 'Courier Prime', monospace;
 	line-height: 2em;
 }
 
