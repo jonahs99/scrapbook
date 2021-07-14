@@ -1,18 +1,28 @@
-import { mountDoodle } from './doodle.js'
+import { html, render } from 'https://unpkg.com/lit-html?module'
+import { mountDoodle } from './doodle/doodle.js'
 
-const scripts = [
+const doodles = [
 	'tree',
 	'fracture',
 	'wave',
 	'coast',
-	'flutter',
 ]
-const script = (scripts.includes(location.search.substr(1)) && location.search.substr(1).toLowerCase()) ||
-	scripts[Math.floor(Math.random() * scripts.length)]
 
-import(`./doodles/${script}.js`).then(doodle => {
-	const canvas = document.querySelector('canvas')
-	const configContainer = document.querySelector('.config-container')
-	mountDoodle(doodle.default ?? doodle, canvas, configContainer)
-})
+const template = html`
+	${doodles.map((name) => html`
+		<div class="doodle">
+			<a href=${`./doodle/?doodle=${name}`}>
+				<h3>${name}</h3>
+				<canvas id=${`canvas-${name}`}></canvas>
+			</a>
+		</div>
+	`)}
+`
+
+render(template, document.getElementById('doodles'))
+
+for (const name of doodles) {
+	const canvas = document.getElementById(`canvas-${name}`)
+	mountDoodle(name, canvas)
+}
 

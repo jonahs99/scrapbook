@@ -10,7 +10,7 @@ See
     randomSeed: tweak.randomSeed(),
     start: {
         radius: tweak.integer(400),
-        n: tweak.integer(3),
+        n: tweak.integer(4),
     },
     iterations: tweak.integer(12),
     displacement: 0.32,

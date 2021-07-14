@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link href="style.css" rel="stylesheet">
+	</head>
+	<body>
+		<script type="module" src="main.js"></script>
+
+		<div class="canvas-container">
+			<canvas></canvas>
+		</div>
+		<div class="config-container">
+			One moment please...
+		</div>
+		<div class="control-panel">
+			<button onclick="
+				document.body.classList.add('config-closed')
+				window.dispatchEvent(new Event('resize'))
+				document.querySelector('.control-panel')
+					.addEventListener('mouseenter', () => {
+						document.body.classList.remove('config-closed')
+						window.dispatchEvent(new Event('resize'))
+					}, { once: true })
+			">ZEN</button>
+			<button id="btn-plot">
+				PLOT
+			</button>
+		</div>
+	</body>
+</html>
+

@@ -11,7 +11,7 @@ See
     randomSeed: tweak.randomSeed(),
     radius: 400,
 
-    iterations: tweak.integer(1000),
+    iterations: tweak.integer(20000),
     speed: 24,
     speedDecay: 0.9,
     wander: 0.3,
@@ -19,8 +19,8 @@ See
     lengthThreshold: tweak.number(0.2, 0.01, 0, 1),
 
     line: {
-        weight: 3,
-        decay: 1,
+        weight: 4,
+        decay: 0.85,
     },
 
     color: {
@@ -28,7 +28,7 @@ See
         line: '#222',
     },
 
-    renderEvery: tweak.integer(1000),
+    renderEvery: tweak.integer(100),
     showProgress: false,
 }), {
     *setup({ config, canvas, ctx }) {

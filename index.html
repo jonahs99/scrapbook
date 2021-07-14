@@ -1,31 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 	<head>
-		<link href="style.css" rel="stylesheet">
+		<style>
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime&display=fallback');
+
+html {
+	font-family: 'Courier Prime', monospace;
+}
+
+body {
+	display: grid;
+	place-items: center;
+}
+
+.content-column {
+	text-align: center;
+	max-width: 1200px;
+}
+
+#doodles {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.doodle {
+	margin: 1em;
+	background: #eee;
+	border-radius: 2px;
+	box-shadow: 0 1px 3px #00000044;
+}
+
+.doodle:hover {
+	opacity: 0.6;
+}
+
+.doodle h3 {
+	position: absolute;
+	margin: 1em;
+	color: #222;
+}
+
+canvas {
+	display: block;
+	width: 500px;
+	height: 500px;
+}
+		</style>
 	</head>
 	<body>
-		<script type="module" src="main.js"></script>
+		<div class="content-column">
+			<h1>Generative Scrapbook</h1>
+			<p>A playful coding exploration of emergent behaviors</p>
+			<div id="doodles"></div>
+		</div>
 
-		<div class="canvas-container">
-			<canvas></canvas>
-		</div>
-		<div class="config-container">
-			One moment please...
-		</div>
-		<div class="control-panel">
-			<button onclick="
-				document.body.classList.add('config-closed')
-				window.dispatchEvent(new Event('resize'))
-				document.querySelector('.control-panel')
-					.addEventListener('mouseenter', () => {
-						document.body.classList.remove('config-closed')
-						window.dispatchEvent(new Event('resize'))
-					}, { once: true })
-			">ZEN</button>
-			<button id="btn-plot">
-				PLOT
-			</button>
-		</div>
+		<script src="main.js" type="module"></script>
 	</body>
 </html>
 
