@@ -10,7 +10,7 @@ See
     randomSeed: tweak.randomSeed(),
     start: {
         radius: tweak.integer(400),
-        n: tweak.integer(4),
+        n: tweak.integer(3),
     },
     iterations: tweak.integer(12),
     displacement: 0.32,
@@ -30,7 +30,7 @@ See
 
         let pts = []
         for (let i = 0; i < config.start.n; i++) {
-            pts.push(polar(rng.next(0, 2 * Math.PI), config.start.radius))
+            pts.push(polar(i * 2 * Math.PI / (config.start.n || 1), config.start.radius))
         }
         for (let i = 0; i < config.iterations; i++) {
             const midpts = pts.map((pt, i) => {
