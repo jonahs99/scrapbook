@@ -31,7 +31,7 @@ export function field<P>(pattern: P) {
 	if (typeof pattern === 'boolean') return boolean(pattern)
 	if (typeof pattern === 'number') return number(pattern)
 	if (typeof pattern === 'string') return string(pattern)
-	if (Array.isArray(pattern)) return list(pattern.map((item) => field(item).state), field(pattern[0]))
+	if (Array.isArray(pattern)) return list((pattern as any[]).map((item) => field(item).state), field(pattern[0]))
 	if (typeof pattern === 'object') return object(mapObject(mapObject(pattern, field), (field, key) => label(`${key}:`, field)))
 	console.error(`Could not infer field for pattern ${pattern}`)
 }

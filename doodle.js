@@ -30,8 +30,8 @@ export function mountDoodle(doodle, canvas, configContainer) {
 	}
 
 	const resizeCanvas = () => {
-		canvas.width = canvas.parentElement.offsetWidth
-		canvas.height = canvas.parentElement.offsetHeight
+		canvas.width = canvas.parentElement.offsetWidth * devicePixelRatio
+		canvas.height = canvas.parentElement.offsetHeight * devicePixelRatio
 
 		if (config) restartDoodle(config)
 	}

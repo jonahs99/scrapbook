@@ -6,12 +6,32 @@ export declare type Field<T, S = unknown> = {
 };
 declare type Template<T, S> = (state: S, set: (newState: S) => void) => TemplateResult;
 declare type Infer<P> = Field<InferValue<P>, InferState<P>>;
-export declare type InferValue<P> = [P] extends [Field<infer T, infer _S>] ? T : [P] extends [undefined] ? undefined : [P] extends [boolean] ? boolean : [P] extends [number] ? number : [P] extends [string] ? string : P extends (infer U)[] ? InferValue<U>[] : P extends {
+export declare type InferValue<P> = [
+    P
+] extends [Field<infer T, infer _S>] ? T : [
+    P
+] extends [undefined] ? undefined : [
+    P
+] extends [boolean] ? boolean : [
+    P
+] extends [number] ? number : [
+    P
+] extends [string] ? string : P extends (infer U)[] ? InferValue<U>[] : P extends {
     [key: string]: any;
 } ? {
     [K in keyof P]: InferValue<P[K]>;
 } : never;
-declare type InferState<P> = [P] extends [Field<infer _T, infer S>] ? S : [P] extends [undefined] ? undefined : [P] extends [boolean] ? boolean : [P] extends [number] ? number : [P] extends [string] ? string : P extends (infer U)[] ? InferState<U>[] : P extends {
+declare type InferState<P> = [
+    P
+] extends [Field<infer _T, infer S>] ? S : [
+    P
+] extends [undefined] ? undefined : [
+    P
+] extends [boolean] ? boolean : [
+    P
+] extends [number] ? number : [
+    P
+] extends [string] ? string : P extends (infer U)[] ? InferState<U>[] : P extends {
     [key: string]: any;
 } ? {
     [K in keyof P]: InferState<P[K]>;
