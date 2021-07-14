@@ -11,7 +11,7 @@ See
     randomSeed: tweak.randomSeed(),
     radius: 400,
 
-    iterations: tweak.integer(20000),
+    iterations: tweak.integer(10000),
     speed: 24,
     speedDecay: 0.9,
     wander: 0.3,
@@ -28,7 +28,7 @@ See
         line: '#222',
     },
 
-    renderEvery: tweak.integer(100),
+    renderEvery: tweak.integer(500),
     showProgress: false,
 }), {
     *setup({ config, canvas, ctx }) {
@@ -42,7 +42,6 @@ See
 		const grid = {}
 		const gridSize = config.speed
 
-        //console.log(config.randomSeed,rng.next(0, 2 * Math.PI))
         let dir = rng.next(0, 2*Math.PI)
         let pen = polar(dir, -config.radius)
         let weight = config.line.weight
