@@ -1,7 +1,5 @@
 import { tweak, sample, Prando } from '../lib.js'
 
-let configAnim
-
 export function config() {
 	return tweak.label('TREE:', {
 		randomSeed: tweak.randomSeed(),
@@ -9,23 +7,13 @@ export function config() {
 		width: 8,
 		decay: 0.85,
 		branchPrb: 0.5,
-		length: tweak.distribution({ normal: { mean: 60, stddev: 30 } }),
-		angle: tweak.distribution({ normal: { mean: 0, stddev: 0.5 } }),
-		animate: tweak.maybe(tweak.number(0.1, 0.01, 0.01, 1)),
+		length: tweak.distribution({ normal: { mean: 60, stddev: 15 } }),
+		angle: tweak.distribution({ normal: { mean: 0, stddev: 0.8 } }),
 	})
 }
 
 export function setup({ config, ctx, canvas }) {
 	canvas.style.background = '#eee'
-}
-
-export function draw({ config, ctx, canvas }) {
-	if (config.animate !== undefined) {
-		configAnim = lerp(configAnim, config, config.animate)
-		config = configAnim
-	} else {
-		configAnim = config	
-	}
 
 	ctx.setTransform(1, 0, 0, 1, 0, 0)
 	ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -64,22 +52,3 @@ function tree({ config, ctx, rng }, n = config.iterations) {
 	ctx.restore()
 }
 
-const lerp = (a, b, delta) => {
-	if (typeof a !== typeof b) return b
-
-	if (typeof b === 'number') {
-		if (isNaN(b)) return a
-		if (Math.abs(a - b) < (Math.abs(b) / 10000)) return b
-		return a * (1 - delta) + b * delta
-	}
-
-	if (Array.isArray(b)) {
-		if (a.length === b.length) return b.map((val, i) => lerp(a[i], val, delta))
-	}
-
-	if (typeof b === 'object') {
-		return Object.fromEntries(Object.entries(b).map(([key, val]) => [key, lerp(a[key], val, delta)]))
-	}
-
-	return b
-}
