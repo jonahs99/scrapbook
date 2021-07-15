@@ -1,4 +1,4 @@
-# scrapbook
-doodling with code
+Some playful coding explorations, hosted at [generativescrapbook.net](https://www.generativescrapbook.net).
 
-no build required: clone and serve the repository
+No build required to run locally, just clone and serve the repository.
+
