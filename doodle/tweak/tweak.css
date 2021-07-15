@@ -1,5 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Courier+Prime&display=fallback');
 
+.doodle-link {
+	float: right;
+	margin: 0.5em;
+	color: #222;
+}
+
 .field, .config-container, pre {
 	box-sizing: border-box;
 	font-family: 'Courier Prime', monospace;

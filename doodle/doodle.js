@@ -2,10 +2,10 @@ import * as tweak from './tweak/dist/index.js'
 
 import { PlotContext } from './plot/plot.js'
 
-export function mountDoodle(name, canvas, configContainer) {
-	loadDoodle(name).then(doodle => {
-		mount(doodle.default ?? doodle, canvas, configContainer)
-	})
+export async function mountDoodle(name, canvas, configContainer, initialState) {
+	const doodle = await loadDoodle(name)
+	const state = mount(doodle.default ?? doodle, canvas, configContainer, initialState)
+	return `/doodle/?doodle=${name}#config=${encodeURIComponent(JSON.stringify(state))}`
 }
 
 async function loadDoodle(name) {
@@ -17,7 +17,7 @@ async function loadDoodle(name) {
 	}
 }
 
-function mount(doodle, canvas, configContainer) {
+function mount(doodle, canvas, configContainer, initialState) {
 	const ctx = canvas.getContext('2d')	
 	let config
 
@@ -67,10 +67,14 @@ function mount(doodle, canvas, configContainer) {
 	document.querySelector('#btn-plot')?.addEventListener('click', plotDoodle)
 
 	if (configContainer) {
-		tweak.render(tweak.field(doodle.config()), configContainer, restartDoodle)
+		const config = doodle.config()
+		config.state = initialState || config.state
+		tweak.render(tweak.field(config), configContainer, restartDoodle)
+		return config.state
 	} else {
 		const { state, getValue } = doodle.config()
-		restartDoodle(getValue(state))
+		restartDoodle(getValue(initialState || state))
+		return initialState || state
 	}
 }
 

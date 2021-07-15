@@ -11,7 +11,7 @@ const doodles = [
 const template = html`
 	${doodles.map((name) => html`
 		<div class="doodle">
-			<a href=${`./doodle/?doodle=${name}`}>
+			<a id=${`link-${name}`} href=${`./doodle/?doodle=${name}`}>
 				<h3>${name}</h3>
 				<canvas id=${`canvas-${name}`}></canvas>
 			</a>
@@ -23,6 +23,8 @@ render(template, document.getElementById('doodles'))
 
 for (const name of doodles) {
 	const canvas = document.getElementById(`canvas-${name}`)
-	mountDoodle(name, canvas)
+	mountDoodle(name, canvas).then((link) => {
+		document.getElementById(`link-${name}`).href = link
+	})
 }
 
