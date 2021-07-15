@@ -6,6 +6,7 @@ const doodles = [
 	'fracture',
 	'wave',
 	'coast',
+	'growth',
 ]
 
 const template = html`
