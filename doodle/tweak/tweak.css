@@ -1,14 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Courier+Prime&display=fallback');
 
+.config-container, pre {
+	font-family: 'Courier Prime', monospace;
+}
+
 .doodle-link {
 	float: right;
 	margin: 0.5em;
 	color: #222;
 }
 
-.field, .config-container, pre {
+.field {
 	box-sizing: border-box;
-	font-family: 'Courier Prime', monospace;
 	line-height: 2em;
 }
 
@@ -19,7 +22,7 @@
 
 .field__describe p {
 	display: block;
-	margin: 0;
+	line-height: 1.2em;
 }
 
 .field__object, .field__list {

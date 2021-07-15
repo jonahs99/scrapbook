@@ -3,9 +3,17 @@ import { tweak, Prando } from '../lib.js'
 export const config = () => tweak.describe(`
 <pre>
 <b>GROWTH</b>
-</pre>`, {
+</pre>
+<p>
+"When the days shorten and leaves fall, the cambium settles in for a winter's rest and stops dividing altogether.
+But as soon as spring is imminent, the cambium once again bursts into action, making large springwood cells.
+The abrupt transition between the last year's small-celled late wood and the early wood of spring creates the appearance of a line, a growth ring."
+</p>
+<p>
+From Robin Wall Kimmerer, <em>Braiding Sweetgrass</em>
+</p>`, {
     randomSeed: tweak.randomSeed(),
-    years: tweak.integer(7),
+    years: tweak.integer(6),
     heart: tweak.maybe({
         ratio: tweak.integer(3),
         fade: 0.5,
@@ -38,6 +46,7 @@ export function* setup({ config, canvas, ctx }) {
     let outerCells = cells.circles.slice()
     for (let i = 0; i < config.years; i++) {
         const nCells = remap(i, 0, config.years-1, config.rings.big, config.rings.small) + rng.next(0, config.rings.rand)
+	const cellsToDraw = []
         for (let j = 0; j < nCells; j++) {
             const l = Math.pow(j / nCells, config.cells.gamma)
             const radius = remap(l, 0, 1, config.cells.big, config.cells.small)
@@ -54,14 +63,14 @@ export function* setup({ config, canvas, ctx }) {
                     if (!cells.find(newCell)) {
                         cells.insert(newCell)
                         newCells.push(newCell)
+			cellsToDraw.push(newCell)
                     }
                 }
             }
             outerCells = newCells
-        
-            draw(ctx, canvas, newCells, config)
-            yield
         }
+        draw(ctx, canvas, cellsToDraw, config)
+        yield
     }
 }
 

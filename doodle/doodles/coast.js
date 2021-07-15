@@ -30,7 +30,7 @@ See
 
         let pts = []
         for (let i = 0; i < config.start.n; i++) {
-            pts.push(polar(i * 2 * Math.PI / (config.start.n || 1), config.start.radius))
+            pts.push(polar((i + rng.next(-0.4, 0.4)) * 2 * Math.PI / (config.start.n || 1), config.start.radius))
         }
         for (let i = 0; i < config.iterations; i++) {
             const midpts = pts.map((pt, i) => {
