@@ -13,6 +13,7 @@ async function loadDoodle(name) {
 	try {
 		return await import(`./doodles/${name || defaultScript}.js`)
 	} catch (err) {
+		console.error(err)
 		return await import(`./doodles/${defaultScript}.js`)
 	}
 }
