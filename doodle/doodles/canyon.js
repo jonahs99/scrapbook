@@ -5,10 +5,12 @@ export function config() {
 		random_seed: tweak.randomSeed(),
 
 		r: 800,
-		m: tweak.integer(2),
+		m: tweak.integer(4),
+		subdivide_every: tweak.integer(2),
 
         jitter: 0.3,
-        bias: 1,
+        momentum: 0.1,
+        // bias: 1,
 
 		line: {
 			width: 2,
@@ -72,20 +74,23 @@ export function setup({ config, ctx, canvas }) {
 
         // subdivide
 
-        pts = pts
-            .slice(0, pts.length - 1)
-            .flatMap((_, i) => {
-                const m = mid(pts[i], pts[i+1])
-                return [mid(pts[i], m), mid(m, pts[i+1])]
-            })
+        if ((j + 1) % config.subdivide_every == 0) {
+            pts = pts
+                .slice(0, pts.length - 1)
+                .flatMap((_, i) => {
+                    const m = mid(pts[i], pts[i+1])
+                    return [mid(pts[i], m), mid(m, pts[i+1])]
+                })
+        }
 
         // jitter
 
         for (let i = 1; i < pts.length - 1; i++) {
             const l = dist(pts[i-1], pts[i+1])
             const h = heading(sub(pts[i+1], pts[i-1]))
-            const j = polar(h + Math.PI/2, rng.next(-l*config.jitter*config.bias, l*config.jitter))
-            pts[i] = add(pts[i], j)
+            const j = polar(h + Math.PI/2, rng.next(-l*config.jitter, l*config.jitter))
+            const m = scale(sub(pts[i], mid(pts[i-1], pts[i+1])), config.momentum)
+            pts[i] = add(pts[i], j, m)
         }
 	}
 }
