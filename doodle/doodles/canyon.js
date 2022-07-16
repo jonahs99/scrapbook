@@ -74,7 +74,7 @@ export function setup({ config, ctx, canvas }) {
 			const d = polar(rng.next(0, 2*Math.PI), config.wander * l)
 			let push = sub(pts[i], mid(pts[i-1], pts[i+1]))
 			let mag_push = mag(push) || Infinity
-			push = scale(push, config.momentum * l / mag_push)
+			push = scale(push, config.momentum / mag_push)
 			pts[i] = add(pts[i], d, push)
 		}
 	}
