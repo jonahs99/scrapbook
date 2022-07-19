@@ -3,6 +3,7 @@ import { mountDoodle } from './doodle/doodle.js'
 
 const doodles = [
 	'tree',
+    'canyon',
 	'fracture',
 	'wave',
 	'coast',
