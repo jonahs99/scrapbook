@@ -5,7 +5,7 @@
   "main": "main.js",
   "dependencies": {
     "prando": "^5.1.2",
-    "snowpack": "^2.6.0"
+    "snowpack": "^3.7.1"
   },
   "devDependencies": {},
   "scripts": {
